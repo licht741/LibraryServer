@@ -7,7 +7,8 @@ public class User extends DatabaseObject {
     boolean isEnable;
 
     public User() {}
-    public User(String login, String name, boolean isEnable) {
+    public User(int id, String login, String name, boolean isEnable) {
+        super(id);
         this.name = name;
         this.login = login;
         this.isEnable = isEnable;
