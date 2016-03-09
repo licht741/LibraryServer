@@ -264,7 +264,6 @@ public class LibrarianWrapper {
                 String publishHouse = resSet.getString("publishhouse");
                 int y = resSet.getInt("pub_year");
                 int bCount = resSet.getInt("ord_count");
-
                 Book book = ObjectCreator.createBook(id, title, author, publishHouse, y);
                 UserOrder userOrder = ObjectCreator.createUserOrder(book, bCount);
                 userOrderArrayList.add(userOrder);
@@ -275,7 +274,6 @@ public class LibrarianWrapper {
             exc.printStackTrace();
             return null;
         }
-
     }
 
     public ArrayList<PurchaseOrder> getPurchaseOrder() {

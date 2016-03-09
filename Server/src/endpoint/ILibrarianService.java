@@ -5,6 +5,7 @@ import exceptions.SomeDBException;
 import types.*;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import java.lang.reflect.Array;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 public interface ILibrarianService {
 
     @WebMethod
-    public boolean authorization(String login, String password);
+    public boolean authorization(@WebParam(name = "login") String login, @WebParam(name = "password") String password);
 
     @WebMethod
     public ArrayList<Book> getAllBooks();
@@ -29,13 +30,15 @@ public interface ILibrarianService {
     public ArrayList<UserOrder> getUserOrders();
 
     @WebMethod
-    public Integer purchaseBook(int bookId, int shopId, int bookCount, Date purDate);
+    public Integer purchaseBook(@WebParam(name = "bookID") int bookId, @WebParam(name = "shopID") int shopId,
+                                @WebParam(name = "count") int bookCount, @WebParam(name = "purchaseDate") Date purDate);
 
     @WebMethod
     public ArrayList<User> getUsersList();
 
     @WebMethod
-    public Integer addNewBook(String title, String author, String publishHouse, int pubYear);
+    public Integer addNewBook(@WebParam(name = "title") String title, @WebParam(name = "author") String author,
+                              @WebParam(name = "pubHouse") String publishHouse, @WebParam(name = "pubYear") int pubYear);
 
     @WebMethod
     public ArrayList<PurchaseOrder> getPurchaseOrders();
