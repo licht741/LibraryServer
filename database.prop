@@ -1,5 +1,5 @@
 user     = SYSDBA
 password = masterkey
 encoding = WIN1251
-url      = jdbc:firebirdsql:localhost/3050:D:\ClientServerProject\Database\LIBRARYDB.FDB ?charset="WIN1251"
+url      = jdbc:firebirdsql:localhost/3050:D:\\ClientServerProject\\Database\\LIBRARYDB.FDB ?charset="WIN1251"
 driver   = org.firebirdsql.jdbc.FBDriver
