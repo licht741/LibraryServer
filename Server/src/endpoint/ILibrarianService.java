@@ -1,9 +1,8 @@
 package endpoint;
 
-import types.Book;
-import types.HashMapWrapper;
-import types.ResultWrap;
-import types.User;
+import exceptions.DBConnectException;
+import exceptions.SomeDBException;
+import types.*;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -21,17 +20,26 @@ public interface ILibrarianService {
     public boolean authorization(String login, String password);
 
     @WebMethod
-    public ArrayList<Book> getAllBooks() throws Exception;
+    public ArrayList<Book> getAllBooks();
 
     @WebMethod
-    public HashMapWrapper getBooksInLibrary() throws Exception;
+    public HashMapWrapper getBooksInLibrary();
 
     @WebMethod
-    public Integer purchaseBook(int bookId, int shopId, int bookCount, Date purDate) throws Exception;
+    public ArrayList<UserOrder> getUserOrders();
 
     @WebMethod
-    public ArrayList<User> getUsersList() throws Exception;
+    public Integer purchaseBook(int bookId, int shopId, int bookCount, Date purDate);
 
     @WebMethod
-    public Integer addNewBook(String title, String author, String publishHouse, int pubYear) throws Exception;
+    public ArrayList<User> getUsersList();
+
+    @WebMethod
+    public Integer addNewBook(String title, String author, String publishHouse, int pubYear);
+
+    @WebMethod
+    public ArrayList<PurchaseOrder> getPurchaseOrders();
+
+    @WebMethod
+    public ArrayList<Operation> getBookOperations();
 }

@@ -2,47 +2,57 @@ package connector;
 
 import exceptions.DBConnectException;
 import exceptions.SomeDBException;
-
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
+/*
+ * Класс, реализующий логику работы подключения к БД
+ * Реализуется через паттерн Singleton
+ */
 public class DatabaseConnector {
-    private static DatabaseConnector instance;
     private static Connection connection;
 
     private static void initializeConnection() throws DBConnectException, SomeDBException {
-        // // TODO: 06.03.2016 Вынести данные в конфигурационный файл 
-        String strURL = "jdbc:firebirdsql:localhost/3050:D:\\ClientServerProject\\Database\\LIBRARYDB.FDB ?charset=\"WIN1251\"";
-        String strUser="SYSDBA";
-        String strPassword = "masterkey";
-        Properties paramConnection = new Properties();
-        paramConnection.setProperty("user", strUser);
-        paramConnection.setProperty("password", strPassword);
-        paramConnection.setProperty("encoding", "WIN1251");
-
         try {
-            Class.forName("org.firebirdsql.jdbc.FBDriver").newInstance();
-            connection = DriverManager.getConnection(strURL, paramConnection);
+            Properties paramConnection = getConnectionParam("database.prop");
+            Class.forName(paramConnection.getProperty("driver")).newInstance();
+            connection = DriverManager.getConnection(paramConnection.getProperty("url"), paramConnection);
         }
         catch (SQLException exc) {
+            exc.printStackTrace();
             throw new SomeDBException(exc.getMessage());
         }
+        catch (IOException exc) {
+            exc.printStackTrace();
+            throw new DBConnectException();
+        }
         catch (Exception exc) {
+            exc.printStackTrace();
             throw new DBConnectException(exc.getMessage());
         }
     }
 
-    public synchronized static Connection getInstance() throws DBConnectException, SomeDBException {
+    public synchronized static Connection getInstance() throws DBConnectException, SomeDBException, IOException {
         try {
             if (connection == null || connection.isClosed())
                 initializeConnection();
             return connection;
         }
         catch (SQLException exc) {
+            exc.printStackTrace();
             throw new SomeDBException(exc.getMessage());
         }
 
     }
 
-
+    private static Properties getConnectionParam(String configurationFile) throws IOException {
+        Properties properties = new Properties();
+        FileInputStream fileInputStream = new FileInputStream(configurationFile);
+        properties.load(fileInputStream);
+        fileInputStream.close();
+        return properties;
+    }
 }
+

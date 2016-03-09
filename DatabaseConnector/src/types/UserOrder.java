@@ -1,32 +1,41 @@
 package types;
 
+/*
+ * Заказы пользователей библиотеки
+ */
 public class UserOrder extends DatabaseObject {
-    int bookId;
+    Book book;
     int count;
-    boolean isClosed;
 
-    public UserOrder(int bookId, int count, boolean isClosed) {
-        this.bookId = bookId;
+    public UserOrder() {}
+
+    /*
+     * @param book Заказываемая книга должна иметься в базе данных библиотеки
+     */
+    public UserOrder(Book book, int count) {
+        this.book = book;
         this.count = count;
-        this.isClosed = isClosed;
     }
 
-    public UserOrder(int id, int bookId, int count, boolean isClosed) {
+    public UserOrder(int id, Book book, int count) {
         super(id);
-        this.bookId = bookId;
+        this.book = book;
         this.count = count;
-        this.isClosed = isClosed;
     }
 
-    public int getBookId() {
-        return bookId;
+    public Book getBook() {
+        return book;
     }
 
     public int getCount() {
         return count;
     }
 
-    public boolean isClosed() {
-        return isClosed;
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

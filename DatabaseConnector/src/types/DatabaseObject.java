@@ -1,6 +1,9 @@
 package types;
 
-
+ /*
+  *  Базовый класс для всех объектов из базы данных
+  *
+  */
 public class DatabaseObject {
     private int id;
 
@@ -12,6 +15,8 @@ public class DatabaseObject {
     public int getId() {
         return id;
     }
+
+    public void setId(int id) {this.id = id; }
 
     @Override
     public String toString() {

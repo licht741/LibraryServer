@@ -1,6 +1,8 @@
 package types;
 
-
+/*
+ * Объекты, содержащие контактную информацию о поставщиках книг
+ */
 public class Store extends DatabaseObject {
     String name;
     String phone;

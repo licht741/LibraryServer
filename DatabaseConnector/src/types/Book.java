@@ -8,11 +8,18 @@ public class Book extends DatabaseObject{
     String title;
     String author;
     String publishHouse;
-    Year year;
+    int year;
 
     public Book() {}
 
-    public Book(int id, String title, String author, String publishHouse, Year year) {
+    public Book(String title, String author, String publishHouse, int year) {
+        this.title = title;
+        this.author = author;
+        this.publishHouse = publishHouse;
+        this.year = year;
+    }
+
+    public Book(int id, String title, String author, String publishHouse, int year) {
         super(id);
         this.title = title;
         this.author = author;
@@ -23,7 +30,23 @@ public class Book extends DatabaseObject{
     public String getTitle() { return title; }
     public String getAuthor() { return author; }
     public String getPublishHouse() { return publishHouse; }
-    public Year getYear() { return year; }
+    public int getYear() { return year; }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setPublishHouse(String publishHouse) {
+        this.publishHouse = publishHouse;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
 
     @Override
     public String toString() {

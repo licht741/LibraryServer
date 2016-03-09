@@ -2,29 +2,62 @@ package types;
 
 import java.util.Date;
 
+
+/*
+ * Объекты-записи о получении пользователем книг
+ */
 public class Operation extends DatabaseObject {
-    int userId;
-    int bookId;
+    String user;
+    Book book;
     Date receivedDate;
     Date deadline;
-    boolean isClosed;
 
     public Operation() {}
 
-    public Operation(int userId, int bookId, Date receivedDate, Date deadline, boolean isClosed) {
-        this.userId = userId;
-        this.bookId = bookId;
+    public Operation(String user, Book book, Date receivedDate, Date deadline) {
+        this.user = user;
+        this.book = book;
         this.receivedDate = receivedDate;
         this.deadline = deadline;
-        this.isClosed = isClosed;
     }
 
-    public Operation(int id, int userId, int bookId, Date receivedDate, Date deadline, boolean isClosed) {
+    public Operation(int id, String user, Book book, Date receivedDate, Date deadline) {
         super(id);
-        this.userId = userId;
-        this.bookId = bookId;
+        this.user = user;
+        this.book = book;
         this.receivedDate = receivedDate;
         this.deadline = deadline;
-        this.isClosed = isClosed;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Date getReceivedDate() {
+        return receivedDate;
+    }
+
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 }

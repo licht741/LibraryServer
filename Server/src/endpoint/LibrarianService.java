@@ -3,10 +3,7 @@ package endpoint;
 import dbwrappers.LibrarianWrapper;
 import exceptions.DBConnectException;
 import exceptions.SomeDBException;
-import types.Book;
-import types.HashMapWrapper;
-import types.ResultWrap;
-import types.User;
+import types.*;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -22,26 +19,37 @@ public class LibrarianService implements ILibrarianService {
         return true;
     }
 
-    public ArrayList<Book> getAllBooks() throws SomeDBException, DBConnectException {
+    public ArrayList<Book> getAllBooks() {
         return libWrapper.getAllBooks();
     }
 
-    public HashMapWrapper getBooksInLibrary() throws SomeDBException, DBConnectException {
+    public HashMapWrapper getBooksInLibrary() {
         return libWrapper.getBooksInLibrary();
     }
 
-    public Integer purchaseBook(int bookId, int shopId,
-                                int bookCount, Date purDate) throws SomeDBException, DBConnectException {
+    public ArrayList<UserOrder> getUserOrders() {
+        return libWrapper.getUserOrders();
+    }
+
+    public Integer purchaseBook(int bookId, int shopId, int bookCount, Date purDate) {
         return libWrapper.purchaseBook(bookId, shopId, bookCount, purDate);
     }
 
-    public ArrayList<User> getUsersList() throws SomeDBException, DBConnectException {
+    public ArrayList<User> getUsersList() {
         return libWrapper.getUsersList();
     }
 
     public Integer addNewBook(String title, String author,
-                              String publishHouse, int pubYear) throws SomeDBException, DBConnectException {
+                              String publishHouse, int pubYear) {
         return libWrapper.addNewBook(title, author, publishHouse, pubYear);
+    }
+
+    public ArrayList<PurchaseOrder> getPurchaseOrders() {
+        return libWrapper.getPurchaseOrder();
+    }
+
+    public ArrayList<Operation> getBookOperations() {
+        return libWrapper.getBookOperations();
     }
 
 }

@@ -1,6 +1,8 @@
 package types;
 
-
+/*
+ * Общая реализация пользователя системы
+ */
 public class User extends DatabaseObject {
     String name;
     String login;
@@ -27,5 +29,17 @@ public class User extends DatabaseObject {
     @Override
     public String toString() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setEnable(boolean enable) {
+        isEnable = enable;
     }
 }
