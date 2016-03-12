@@ -5,6 +5,7 @@ import creators.ObjectCreator;
 import types.Book;
 import types.Operation;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -168,7 +169,7 @@ public class ReaderWrapper {
      * Возвращаемый результат:
      *      -2 - Системная ошибка
      *      -1 - Записи не найдено, или на данную книгу есть заказ
-     *      0  - Время успешно продлено
+     *       0 - Время успешно продлено
      */
     public int extendUsage(int recordID) {
         try {
@@ -214,6 +215,64 @@ public class ReaderWrapper {
         catch (Exception exc) {
             exc.printStackTrace();
             return null;
+        }
+    }
+
+    /*
+     * Функция, реализующая читательскую авторизация
+     * Возвращаемые результаты:
+     *      -1 - Пользователь с такими данными не найден
+     *      -2 - Авторизация проведена успешно, однако доступ пользователя заблокирован
+     *      -3 - Возникла системная ошибка
+     *       0 - Авторизация проведена успешно
+     */
+    public int authorization(String login, String password) {
+        String userType = "U";
+        try {
+            Connection connection = DatabaseConnector.getInstance();
+            CallableStatement statement = connection.prepareCall("{call authorization(?, ?, ?, ?)}");
+            statement.setString(1, login);
+            statement.setString(2, password);
+            statement.setString(3, userType);
+            statement.registerOutParameter(4, Types.INTEGER);
+            statement.execute();
+            int result = statement.getInt(4);
+            statement.close();;
+            return result;
+        }
+        catch (Exception exc) {
+            exc.printStackTrace();
+            return -3;
+        }
+    }
+
+    /*
+     * Функция, реализующая регистрацию нового читателя
+     * Возвращаемые результаты
+     *      -1 - Пользователь с таким логином уже существует
+     *      -2 - Некорректные входные данные
+     *      -3 - Возникла системная ошибка
+     *       0 - Регистрация проведена успешно.
+     */
+
+    public int registration(String login, String name, String password) {
+        String userType = "U";
+        try {
+            Connection connection = DatabaseConnector.getInstance();
+            CallableStatement statement = connection.prepareCall("{call librarian_registration(?, ?, ?, ?, ?)}");
+            statement.setString(1, login);
+            statement.setString(2, password);
+            statement.setString(3, name);
+            statement.setString(4, userType);
+            statement.registerOutParameter(5, Types.INTEGER);
+            statement.execute();
+            int result = statement.getInt(5);
+            statement.close();;
+            return result;
+        }
+        catch (Exception exc) {
+            exc.printStackTrace();
+            return -3;
         }
     }
 

@@ -32,4 +32,11 @@ public interface IReaderService {
 
     @WebMethod
     public ArrayList<Book> getAllBooks();
+
+    @WebMethod
+    public int authorization(@WebParam(name = "login") String login, @WebParam(name = "password") String password);
+
+    @WebMethod
+    public int registration(@WebParam(name = "login") String login, @WebParam(name = "password") String password,
+                            @WebParam(name = "name") String name);
 }

@@ -5,6 +5,7 @@ import dbwrappers.ReaderWrapper;
 import types.Book;
 import types.Operation;
 
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.ArrayList;
 
@@ -33,4 +34,12 @@ public class ReaderService implements IReaderService{
     public int extendUsage(int recordID) { return readerWrapper.extendUsage(recordID); }
 
     public ArrayList<Book> getAllBooks() { return readerWrapper.getAllBooks(); }
+
+    public int authorization(String login, String password) {
+        return readerWrapper.authorization(login, password);
+    }
+
+    public int registration(String login, String password, String name) {
+        return readerWrapper.registration(login, password, name);
+    }
 }
