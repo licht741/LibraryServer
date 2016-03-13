@@ -17,6 +17,7 @@ import java.util.HashMap;
 @SOAPBinding(style= SOAPBinding.Style.DOCUMENT,use= SOAPBinding.Use.LITERAL, parameterStyle= SOAPBinding.ParameterStyle.WRAPPED)
 public interface ILibrarianService {
 
+
     @WebMethod
     public boolean authorization(@WebParam(name = "login") String login, @WebParam(name = "password") String password);
 
@@ -45,4 +46,13 @@ public interface ILibrarianService {
 
     @WebMethod
     public ArrayList<Operation> getBookOperations();
+
+    @WebMethod
+    public ArrayList<Operation> findDebtors();
+
+    @WebMethod
+    public Integer lockDebtor(@WebParam (name = "userID") int userID);
+
+    @WebMethod
+    public Integer unlockDebtor(@WebParam (name = "userID") int userID);
 }

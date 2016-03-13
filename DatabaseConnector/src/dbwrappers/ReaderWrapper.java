@@ -2,6 +2,7 @@ package dbwrappers;
 
 import connector.DatabaseConnector;
 import creators.ObjectCreator;
+import types.AuthWrap;
 import types.Book;
 import types.Operation;
 
@@ -226,23 +227,34 @@ public class ReaderWrapper {
      *      -3 - Возникла системная ошибка
      *       0 - Авторизация проведена успешно
      */
-    public int authorization(String login, String password) {
-        String userType = "U";
+    public AuthWrap authorization(String login, String passwd) {
         try {
             Connection connection = DatabaseConnector.getInstance();
-            CallableStatement statement = connection.prepareCall("{call authorization(?, ?, ?, ?)}");
-            statement.setString(1, login);
-            statement.setString(2, password);
-            statement.setString(3, userType);
-            statement.registerOutParameter(4, Types.INTEGER);
-            statement.execute();
-            int result = statement.getInt(4);
-            statement.close();;
-            return result;
+            CallableStatement callableStatement = connection.prepareCall("{call AUTHORIZATION(?, ?, ?, ?, ?, ?)}");
+
+            callableStatement.setString(1, login);
+            callableStatement.setString(2, passwd);
+            callableStatement.setString(3, "U");
+            callableStatement.registerOutParameter(4, Types.INTEGER);
+            callableStatement.registerOutParameter(5, Types.INTEGER);
+            callableStatement.registerOutParameter(6, Types.CHAR);
+            callableStatement.execute();
+
+            int outRes  = callableStatement.getInt(4);
+            int outID = callableStatement.getInt(5);
+            String outUserName = callableStatement.getString(6);
+            callableStatement.close();
+            AuthWrap authWrap = new AuthWrap();
+            authWrap.setResult(outRes);
+            authWrap.setUserID(outID);
+            authWrap.setUserName(outUserName);
+
+            return authWrap;
         }
+
         catch (Exception exc) {
             exc.printStackTrace();
-            return -3;
+            return null;
         }
     }
 
@@ -267,7 +279,8 @@ public class ReaderWrapper {
             statement.registerOutParameter(5, Types.INTEGER);
             statement.execute();
             int result = statement.getInt(5);
-            statement.close();;
+            statement.close();
+            connection.close();
             return result;
         }
         catch (Exception exc) {

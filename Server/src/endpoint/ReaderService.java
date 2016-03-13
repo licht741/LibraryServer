@@ -2,6 +2,7 @@ package endpoint;
 
 
 import dbwrappers.ReaderWrapper;
+import types.AuthWrap;
 import types.Book;
 import types.Operation;
 
@@ -35,7 +36,7 @@ public class ReaderService implements IReaderService{
 
     public ArrayList<Book> getAllBooks() { return readerWrapper.getAllBooks(); }
 
-    public int authorization(String login, String password) {
+    public AuthWrap userAuthorization(String login, String password) {
         return readerWrapper.authorization(login, password);
     }
 

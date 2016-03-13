@@ -1,5 +1,6 @@
 package endpoint;
 
+import types.AuthWrap;
 import types.Book;
 import types.Operation;
 
@@ -34,7 +35,7 @@ public interface IReaderService {
     public ArrayList<Book> getAllBooks();
 
     @WebMethod
-    public int authorization(@WebParam(name = "login") String login, @WebParam(name = "password") String password);
+    public AuthWrap userAuthorization(@WebParam(name = "login") String login, @WebParam(name = "password") String password);
 
     @WebMethod
     public int registration(@WebParam(name = "login") String login, @WebParam(name = "password") String password,

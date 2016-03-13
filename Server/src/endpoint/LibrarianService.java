@@ -15,8 +15,16 @@ import java.util.HashMap;
 public class LibrarianService implements ILibrarianService {
     LibrarianWrapper libWrapper = new LibrarianWrapper();
 
-    public boolean authorization(String login, String password) {
-        return true;
+    /*
+     * Методы для получения данных
+     */
+
+    public ArrayList<User> getUsersList() {
+        return libWrapper.getUsersList();
+    }
+
+    public ArrayList<Operation> findDebtors() {
+        return libWrapper.findDebtors();
     }
 
     public ArrayList<Book> getAllBooks() {
@@ -31,25 +39,36 @@ public class LibrarianService implements ILibrarianService {
         return libWrapper.getUserOrders();
     }
 
-    public Integer purchaseBook(int bookId, int shopId, int bookCount, Date purDate) {
-        return libWrapper.purchaseBook(bookId, shopId, bookCount, purDate);
-    }
-
-    public ArrayList<User> getUsersList() {
-        return libWrapper.getUsersList();
-    }
-
-    public Integer addNewBook(String title, String author,
-                              String publishHouse, int pubYear) {
-        return libWrapper.addNewBook(title, author, publishHouse, pubYear);
-    }
-
     public ArrayList<PurchaseOrder> getPurchaseOrders() {
         return libWrapper.getPurchaseOrder();
     }
 
     public ArrayList<Operation> getBookOperations() {
         return libWrapper.getBookOperations();
+    }
+
+    /*
+     * Методы вызова процедур
+     */
+
+    public Integer purchaseBook(int bookId, int shopId, int bookCount, Date purDate) {
+        return libWrapper.purchaseBook(bookId, shopId, bookCount, purDate);
+    }
+
+    public Integer lockDebtor(int userID) {
+        return libWrapper.lockDebtor(userID);
+    }
+
+    public Integer unlockDebtor(int userID) {
+        return libWrapper.unlockDebtor(userID);
+    }
+
+    public boolean authorization(String login, String password) {
+        return true;
+    }
+
+    public Integer addNewBook(String title, String author, String publishHouse, int pubYear) {
+        return libWrapper.addNewBook(title, author, publishHouse, pubYear);
     }
 
 }

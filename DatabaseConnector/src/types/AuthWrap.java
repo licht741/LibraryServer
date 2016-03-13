@@ -9,14 +9,34 @@ package types;
  *     -2 - Ошибка авторизации: Допуск пользователя заблокирован
  */
 public class AuthWrap {
-    public int result;
-    public int userID;
-    public String userName;
+    int result;
+    int userID;
+    String userName;
 
-    public AuthWrap(int result, int userID, String userName) {
+
+    public AuthWrap() {}
+
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
         this.result = result;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
         this.userName = userName;
     }
-    public AuthWrap() {}
 }

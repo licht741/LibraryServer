@@ -4,6 +4,7 @@ import connector.DatabaseConnector;
 import creators.ObjectCreator;
 import types.*;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.time.Year;
 import java.util.ArrayList;
@@ -35,7 +36,53 @@ public class LibrarianWrapper {
             int outRes  = callableStatement.getInt(4);
             int outID = callableStatement.getInt(5);
             String outUserName = callableStatement.getString(6);
-            return new AuthWrap(outRes, outID, outUserName);
+            AuthWrap authWrap = new AuthWrap();
+            authWrap.setResult(outRes);
+            authWrap.setUserID(outID);
+            authWrap.setUserName(outUserName);
+
+            return authWrap;
+        }
+
+        catch (Exception exc) {
+            exc.printStackTrace();
+            return null;
+        }
+    }
+
+    public ArrayList<Operation> findDebtors() {
+        try {
+            Connection connection = DatabaseConnector.getInstance();
+            CallableStatement callableStatement = connection.prepareCall("{call FIND_DEBTORS(?, ?, ?, ?, ?, ?, ?, ?)}");
+
+            callableStatement.registerOutParameter(1, Types.INTEGER);
+            callableStatement.registerOutParameter(2, Types.CHAR);
+            callableStatement.registerOutParameter(3, Types.CHAR);
+            callableStatement.registerOutParameter(4, Types.CHAR);
+            callableStatement.registerOutParameter(5, Types.CHAR);
+            callableStatement.registerOutParameter(6, Types.INTEGER);
+            callableStatement.registerOutParameter(7, Types.DATE);
+            callableStatement.registerOutParameter(8, Types.DATE);
+
+            ResultSet resultSet = callableStatement.executeQuery();
+            ArrayList<Operation> operations = new ArrayList<Operation>();
+
+            while (resultSet.next()) {
+                int operationID = resultSet.getInt(1);
+                String debtorName = resultSet.getString(2);
+                String bookTitle = resultSet.getString(3);
+                String bookAuthor = resultSet.getString(4);
+                String bookPubhouse = resultSet.getString(5);
+                int pubYear = resultSet.getInt(6);
+                Date recDate = resultSet.getDate(7);
+                Date deadline = resultSet.getDate(8);
+
+                Book book = ObjectCreator.createBook(bookTitle, bookAuthor, bookPubhouse, pubYear);
+                Operation operation = ObjectCreator.createOperation(operationID, debtorName, book, recDate, deadline);
+                operations.add(operation);
+            }
+            resultSet.close();
+            return operations;
         }
 
         catch (Exception exc) {
@@ -270,6 +317,62 @@ public class LibrarianWrapper {
         catch (Exception exc) {
             exc.printStackTrace();
             return null;
+        }
+    }
+
+    /*
+     *
+     * Блокирует пользователя с заданным userID
+     * Возвращает:
+     *      -2 - В случае системной ошибки
+     *      -1 - Если пользователь не найден или у него нет долгов
+     *       0 - В случае успешной блокировки
+     *
+     */
+    public int lockDebtor(int userID) {
+        try {
+            Connection connection = DatabaseConnector.getInstance();
+            CallableStatement callableStatement = connection.prepareCall("{call LOCK_DEBTORS(?, ?)}");
+            callableStatement.setInt(1, userID);
+            callableStatement.registerOutParameter(2, Types.INTEGER);
+
+            callableStatement.execute();
+            int retResult = callableStatement.getInt(2);
+            callableStatement.close();
+            return retResult;
+
+        }
+        catch (Exception exc) {
+            exc.printStackTrace();
+            return -2;
+        }
+    }
+
+    /*
+ *
+ * Разблокирует пользователя с заданным userID
+ * Возвращает:
+ *      -2 - В случае системной ошибки
+ *      -1 - Если пользователь не найден
+ *       0 - В случае успешной блокировки
+ *
+ */
+    public int unlockDebtor(int userID) {
+        try {
+            Connection connection = DatabaseConnector.getInstance();
+            CallableStatement callableStatement = connection.prepareCall("{call UNLOCK_DEBTORS(?, ?)}");
+            callableStatement.setInt(1, userID);
+            callableStatement.registerOutParameter(2, Types.INTEGER);
+
+            callableStatement.execute();
+            int retResult = callableStatement.getInt(2);
+            callableStatement.close();
+            return retResult;
+
+        }
+        catch (Exception exc) {
+            exc.printStackTrace();
+            return -2;
         }
     }
 }
