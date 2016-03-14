@@ -26,7 +26,7 @@ public class DatabaseConnector {
         }
         catch (IOException exc) {
             exc.printStackTrace();
-            throw new DBConnectException();
+            throw new DBConnectException(exc.getMessage());
         }
         catch (Exception exc) {
             exc.printStackTrace();

@@ -72,4 +72,15 @@ public class ObjectCreator {
         operation.setDeadline(deadline);
         return operation;
     }
+
+    public static Store createStore(int storeID, String storeName, String storePhone, String storeAddress) {
+        Store store = new Store();
+
+        store.setId(storeID);
+        store.setName(storeName);
+        store.setPhone(storePhone);
+        store.setAddress(storeAddress);
+
+        return store;
+    }
 }

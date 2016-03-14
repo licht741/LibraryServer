@@ -375,4 +375,68 @@ public class LibrarianWrapper {
             return -2;
         }
     }
+
+    public ArrayList<Store> getStores() {
+        try {
+            ArrayList<Store> stores = new ArrayList<Store>();
+
+            Connection connection = DatabaseConnector.getInstance();
+            Statement statement = connection.createStatement();
+            String SQLQuery = "select * from book_stores";
+            ResultSet resSet = statement.executeQuery(SQLQuery);
+
+            while (resSet.next()) {
+                int storeID = resSet.getInt(1);
+                String storeName = resSet.getString(2);
+                String phone = resSet.getString(3);
+                String address = resSet.getString(4);
+
+                Store store = ObjectCreator.createStore(storeID, storeName, phone, address);
+                stores.add(store);
+            }
+            resSet.close();
+            return stores;
+        }
+        catch (Exception exc) {
+            exc.printStackTrace();
+            return null;
+        }
+    }
+
+    /*
+ * Добавление нового поставщика в базу
+ * Возвращает:
+ *       0 - В случае ошибки добавления
+ *      id - id нового поставщика в случае успеха
+ */
+    public int addNewStore(String name, String phone, String address) {
+        try {
+            Connection connection = DatabaseConnector.getInstance();
+            String insStatement = String.format("insert into BOOK_STORES(name, phone, " +
+                            "address) values('%s', '%s', '%s')",
+                    name, phone, address);
+            Statement cStatement = connection.createStatement();
+
+            int success = cStatement.executeUpdate(insStatement);
+            if (success == 0)
+                return 0;
+            cStatement.close();
+            String SQLStatement = String.format("select id from BOOK_STORES where " +
+                            "name = '%s' and phone = '%s' and " +
+                            "address = '%s'", name, phone, address);
+
+            Statement statement = connection.createStatement();
+            ResultSet rSet = statement.executeQuery(SQLStatement);
+
+            int id = 0;
+            if (rSet.next())
+                id = rSet.getInt("id");
+            rSet.close();
+            return id;
+        }
+        catch (Exception exc) {
+            exc.printStackTrace();
+            return -1;
+        }
+    }
 }

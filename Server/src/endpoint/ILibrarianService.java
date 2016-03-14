@@ -38,7 +38,7 @@ public interface ILibrarianService {
     public ArrayList<User> getUsersList();
 
     @WebMethod
-    public Integer addNewBook(@WebParam(name = "title") String title, @WebParam(name = "author") String author,
+    public Integer addNewBook(@WebParam(name = "Stitle") String title, @WebParam(name = "author") String author,
                               @WebParam(name = "pubHouse") String publishHouse, @WebParam(name = "pubYear") int pubYear);
 
     @WebMethod
@@ -55,4 +55,11 @@ public interface ILibrarianService {
 
     @WebMethod
     public Integer unlockDebtor(@WebParam (name = "userID") int userID);
+
+    @WebMethod
+    public ArrayList<Store> getStores();
+
+    @WebMethod
+    public int addNewStore(@WebParam (name = "name") String name, @WebParam (name = "phone") String phone,
+                           @WebParam (name = "address") String address);
 }

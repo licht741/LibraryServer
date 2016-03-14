@@ -6,6 +6,7 @@ import exceptions.SomeDBException;
 import types.*;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,4 +72,7 @@ public class LibrarianService implements ILibrarianService {
         return libWrapper.addNewBook(title, author, publishHouse, pubYear);
     }
 
+    public ArrayList<Store> getStores() {return libWrapper.getStores(); }
+
+    public int addNewStore(String name, String phone, String address) {return libWrapper.addNewStore(name, phone, address); }
 }
