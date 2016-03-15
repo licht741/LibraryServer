@@ -19,7 +19,11 @@ public interface ILibrarianService {
 
 
     @WebMethod
-    public boolean authorization(@WebParam(name = "login") String login, @WebParam(name = "password") String password);
+    public AuthWrap authorization(@WebParam(name = "login") String login, @WebParam(name = "password") String password);
+
+    @WebMethod
+    public int registration(@WebParam(name = "login") String login, @WebParam(name = "password") String password,
+                            @WebParam(name="name") String name);
 
     @WebMethod
     public ArrayList<Book> getAllBooks();

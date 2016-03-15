@@ -332,7 +332,7 @@ public class LibrarianWrapper {
     public int lockDebtor(int userID) {
         try {
             Connection connection = DatabaseConnector.getInstance();
-            CallableStatement callableStatement = connection.prepareCall("{call LOCK_DEBTORS(?, ?)}");
+            CallableStatement callableStatement = connection.prepareCall("{call LOCK_DEBTOR(?, ?)}");
             callableStatement.setInt(1, userID);
             callableStatement.registerOutParameter(2, Types.INTEGER);
 
@@ -354,13 +354,13 @@ public class LibrarianWrapper {
  * Возвращает:
  *      -2 - В случае системной ошибки
  *      -1 - Если пользователь не найден
- *       0 - В случае успешной блокировки
+ *       0 - В случае успешной разблокировки
  *
  */
     public int unlockDebtor(int userID) {
         try {
             Connection connection = DatabaseConnector.getInstance();
-            CallableStatement callableStatement = connection.prepareCall("{call UNLOCK_DEBTORS(?, ?)}");
+            CallableStatement callableStatement = connection.prepareCall("{call UNLOCK_DEBTOR(?, ?)}");
             callableStatement.setInt(1, userID);
             callableStatement.registerOutParameter(2, Types.INTEGER);
 
@@ -439,4 +439,36 @@ public class LibrarianWrapper {
             return -1;
         }
     }
+
+        /*
+     * Функция, реализующая регистрацию нового читателя
+     * Возвращаемые результаты
+     *      -1 - Пользователь с таким логином уже существует
+     *      -2 - Некорректные входные данные
+     *      -3 - Возникла системная ошибка
+     *       0 - Регистрация проведена успешно.
+     */
+
+    public int registration(String login, String name, String password) {
+        String userType = "L";
+        try {
+            Connection connection = DatabaseConnector.getInstance();
+            CallableStatement statement = connection.prepareCall("{call librarian_registration(?, ?, ?, ?, ?)}");
+            statement.setString(1, login);
+            statement.setString(2, password);
+            statement.setString(3, name);
+            statement.setString(4, userType);
+            statement.registerOutParameter(5, Types.INTEGER);
+            statement.execute();
+            int result = statement.getInt(5);
+            statement.close();
+            connection.close();
+            return result;
+        }
+        catch (Exception exc) {
+            exc.printStackTrace();
+            return -3;
+        }
+    }
+
 }

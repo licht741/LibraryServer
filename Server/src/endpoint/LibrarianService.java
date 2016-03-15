@@ -64,8 +64,8 @@ public class LibrarianService implements ILibrarianService {
         return libWrapper.unlockDebtor(userID);
     }
 
-    public boolean authorization(String login, String password) {
-        return true;
+    public AuthWrap authorization(String login, String password) {
+        return libWrapper.libAuthorization(login, password);
     }
 
     public Integer addNewBook(String title, String author, String publishHouse, int pubYear) {
@@ -75,4 +75,8 @@ public class LibrarianService implements ILibrarianService {
     public ArrayList<Store> getStores() {return libWrapper.getStores(); }
 
     public int addNewStore(String name, String phone, String address) {return libWrapper.addNewStore(name, phone, address); }
+
+    public int registration(String login, String password, String name) {
+        return libWrapper.registration(login, name, password);
+    }
 }
